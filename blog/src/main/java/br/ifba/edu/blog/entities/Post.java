@@ -1,5 +1,7 @@
 package br.ifba.edu.blog.entities;
 
+import br.ifba.edu.blog.dtos.PostDTO;
+import br.ifba.edu.blog.dtos.PostFormDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,6 +35,22 @@ public class Post {
  		this.usuario = usuario;
  		this.categoria = categoria;
  	}
+     
+     public Post( PostFormDTO postFormDTO) {
+		 super();
+		 this.titulo = postFormDTO.titulo();
+		 this.texto = postFormDTO.texto();
+		 this.categoria = postFormDTO.categoria();
+	 }
+ 
+     
+     public Post(PostDTO postDTO) {
+    	 this.id = postDTO.id();
+    	 this.titulo = postDTO.titulo();
+    	 this.texto = postDTO.texto();
+    	 //this.usuario = new Usuario(postDTO.usuario().id(), postDTO.usuario().nome(), postDTO.usuario().login(), postDTO.usuario().senha());
+     	this.categoria = postDTO.categoria();
+     }
 
 	 public Long getId() {
 		 return id;

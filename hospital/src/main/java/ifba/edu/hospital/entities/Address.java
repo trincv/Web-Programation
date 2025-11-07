@@ -67,9 +67,7 @@ public class Address {
     public void setPlace(String place) { this.place = place; }
 
     public String getCep() { return cep; }
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
+    public void setCep(String cep) { this.cep = cep; }
 
     public String getNeighborhood() { return neighborhood; }
     public void setNeighborhood(String neighborhood) { this.neighborhood = neighborhood; }
