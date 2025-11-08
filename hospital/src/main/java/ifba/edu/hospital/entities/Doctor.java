@@ -9,23 +9,32 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "doctor")
 public class Doctor {
     
     @Id
+    @NotBlank(message = "The crm cannot be null")
     private String crm;
 
+    @NotBlank(message = "The name cannot be null")
     private String name;
+
+    @NotBlank(message = "The email cannot be null")
     private String email;
+
+    @NotBlank(message = "The cellphone cannot be null")
     private String cellphone;
 
     @Enumerated(EnumType.STRING)
+    @NotBlank(message = "The specialty cannot be null")
     private Specialty specialty;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true, referencedColumnName = "id")
+    @NotBlank(message = "The address cannot be null")
     private Address address;
 
     public Doctor() { }

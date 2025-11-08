@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "address")
@@ -14,50 +15,33 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    
+    @NotBlank(message = "The place cannot be null")
     private String place;
+
+    @NotBlank(message = "The neighborhood cannot be null")
+    private String neighborhood;
+
+    @NotBlank(message = "The city cannot be null")
+    private String city;
+
+    @NotBlank(message = "The estate cannot be null")
+    private String estate;
+
+    @NotBlank(message = "The cep cannot be null")
+    private String cep;
+
     private int number;
     private String complement;
-    private String neighborhood;
-    private String city;
-    private String estate;
-    private String cep;
 
     public Address() { }
 
-    public Address(String place, String neighborhood, String city,String estate,String cep, int number, String complement) {
+    public Address(String place, String neighborhood, String city, String estate, String cep, int number, String complement) {
         this.place = place;
         this.number = number;
         this.neighborhood = neighborhood;
         this.cep = cep;
         this.city = city;
         this.complement = complement;
-        this.estate = estate;
-    }
-
-    public Address(String place, String neighborhood, String city, String estate, String cep, String complement) {
-        this.place = place;
-        this.neighborhood = neighborhood;
-        this.cep = cep;
-        this.city = city;
-        this.complement = complement;
-        this.estate = estate;
-    }
-
-    public Address(String place, String neighborhood, String city, String estate, String cep, int number) {
-        this.place = place;
-        this.number = number;
-        this.neighborhood = neighborhood;
-        this.cep = cep;
-        this.city = city;
-        this.estate = estate;
-    }
-
-    public Address(String place, String neighborhood, String city, String estate, String cep) {
-        this.place = place;
-        this.neighborhood = neighborhood;
-        this.cep = cep;
-        this.city = city;
         this.estate = estate;
     }
 
