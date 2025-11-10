@@ -1,5 +1,6 @@
 package ifba.edu.hospital.entities;
 
+import ifba.edu.hospital.dtos.DoctorFormDTO;
 import ifba.edu.hospital.enums.Specialty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,31 +11,26 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "doctor")
 public class Doctor {
     
     @Id
-    @NotBlank(message = "The crm cannot be null")
     private String crm;
 
-    @NotBlank(message = "The name cannot be null")
     private String name;
 
-    @NotBlank(message = "The email cannot be null")
     private String email;
 
-    @NotBlank(message = "The cellphone cannot be null")
     private String cellphone;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "The specialty cannot be null")
     private Specialty specialty;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true, referencedColumnName = "id")
-    @NotBlank(message = "The address cannot be null")
     private Address address;
 
     public Doctor() { }
@@ -48,8 +44,20 @@ public class Doctor {
         this.address = address;
     }
 
+    public Doctor(DoctorFormDTO doctor) {
+        crm = doctor.crm();
+        name = doctor.name();
+        email = doctor.email();
+        cellphone = doctor.cellphone();
+        specialty = doctor.specialty();
+        address = doctor.address();
+    }
+
     public String getCrm() { return crm; }
     public void setCrm(String crm) { this.crm = crm; }
+
+    //public long getPassword() { return password; }
+    //public void setPassword(long password) { this.password = password; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
