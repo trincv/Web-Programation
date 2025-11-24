@@ -10,6 +10,7 @@ import ifba.edu.hospital.entities.Doctor;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor,String> {
     
+    public Doctor findByLoginUserName(String userName);
     public List<Doctor> findByName(String name);
     public Doctor findByCrm(String crm);
 }

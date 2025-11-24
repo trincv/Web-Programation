@@ -1,11 +1,11 @@
 package ifba.edu.hospital.entities;
 
+import ifba.edu.hospital.dtos.address.AddressFormDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "address")
@@ -13,29 +13,19 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @NotBlank(message = "The place cannot be null")
     private String place;
-
-    @NotBlank(message = "The neighborhood cannot be null")
     private String neighborhood;
-
-    @NotBlank(message = "The city cannot be null")
     private String city;
-
-    @NotBlank(message = "The estate cannot be null")
     private String estate;
-
-    @NotBlank(message = "The cep cannot be null")
     private String cep;
-
-    private int number;
+    private Integer number;
     private String complement;
 
     public Address() { }
 
-    public Address(String place, String neighborhood, String city, String estate, String cep, int number, String complement) {
+    public Address(String place, String neighborhood, String city, String estate, String cep, Integer number, String complement) {
         this.place = place;
         this.number = number;
         this.neighborhood = neighborhood;
@@ -43,6 +33,16 @@ public class Address {
         this.city = city;
         this.complement = complement;
         this.estate = estate;
+    }
+
+    public Address(AddressFormDTO addressFormDTO) {
+        this.place = addressFormDTO.place();
+        this.number = addressFormDTO.number();
+        this.neighborhood = addressFormDTO.neighborhood();
+        this.cep = addressFormDTO.cep();
+        this.city = addressFormDTO.city();
+        this.complement = addressFormDTO.complement();
+        this.estate = addressFormDTO.estate();
     }
 
     public Long getId() { return id; }
@@ -62,8 +62,8 @@ public class Address {
     public String getEstate() { return estate; }
     public void setEstate(String estate) { this.estate = estate; }
 
-    public int getNumber() { return number; }
-    public void setNumber(int number) { this.number = number; }
+    public Integer getNumber() { return number; }
+    public void setNumber(Integer number) { this.number = number; }
 
     public String getComplement() { return complement; }
     public void setComplement(String complement) { this.complement = complement; }

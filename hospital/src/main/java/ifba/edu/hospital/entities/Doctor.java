@@ -1,6 +1,6 @@
 package ifba.edu.hospital.entities;
 
-import ifba.edu.hospital.dtos.DoctorFormDTO;
+import ifba.edu.hospital.dtos.doctor.DoctorFormDTO;
 import ifba.edu.hospital.enums.Specialty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -31,15 +31,18 @@ public class Doctor {
     @JoinColumn(name = "address_id", unique = true, referencedColumnName = "id")
     private Address address;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "login_id", unique = true, referencedColumnName = "id")
+    private LoginData login;
+
     public Doctor() { }
 
-    public Doctor(String crm, String name, String email, String cellphone, Specialty specialty, Address address) {
+    public Doctor(String crm, String name, String email, String cellphone, Specialty specialty) {
         this.crm = crm;
         this.name = name;
         this.email = email;
         this.cellphone = cellphone;
         this.specialty = specialty;
-        this.address = address;
     }
 
     public Doctor(DoctorFormDTO doctor) {
@@ -48,14 +51,10 @@ public class Doctor {
         email = doctor.email();
         cellphone = doctor.cellphone();
         specialty = doctor.specialty();
-        address = doctor.address();
     }
 
     public String getCrm() { return crm; }
     public void setCrm(String crm) { this.crm = crm; }
-
-    //public long getPassword() { return password; }
-    //public void setPassword(long password) { this.password = password; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -72,4 +71,6 @@ public class Doctor {
     public Address getAddress() { return address; }
     public void setAddress(Address address) { this.address = address; }
 
+    public LoginData getLogin() { return login; }
+    public void setLogin(LoginData login) { this.login = login; }
 }

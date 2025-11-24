@@ -1,0 +1,15 @@
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/AgendaApplication.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/controllers/UsuarioController.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/dtos/LoginDTO.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/dtos/RoleDto.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/dtos/TokenDTO.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/dtos/UsuarioDTO.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/entities/Contato.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/entities/Role.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/entities/Usuario.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/repositories/UsuarioRepository.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/security/SecurityConfigurations.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/security/SecurityFilter.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/services/AutenticacaoService.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/services/JWTokenService.java
+/home/filipe/ifba/Web-Programation/agenda/src/main/java/com/api/agenda/services/UsuarioService.java

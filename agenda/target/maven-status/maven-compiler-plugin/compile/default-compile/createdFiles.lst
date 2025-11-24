@@ -1,0 +1,15 @@
+com/api/agenda/entities/Usuario.class
+com/api/agenda/security/SecurityFilter.class
+com/api/agenda/dtos/LoginDTO.class
+com/api/agenda/dtos/RoleDto.class
+com/api/agenda/services/AutenticacaoService.class
+com/api/agenda/AgendaApplication.class
+com/api/agenda/dtos/UsuarioDTO.class
+com/api/agenda/entities/Role.class
+com/api/agenda/repositories/UsuarioRepository.class
+com/api/agenda/services/UsuarioService.class
+com/api/agenda/entities/Contato.class
+com/api/agenda/security/SecurityConfigurations.class
+com/api/agenda/services/JWTokenService.class
+com/api/agenda/controllers/UsuarioController.class
+com/api/agenda/dtos/TokenDTO.class
