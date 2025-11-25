@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.api.agenda.repositories.UsuarioRepository;
+import com.api.agenda.repositories.UserRepository;
 import com.api.agenda.services.JWTokenService;
 
 import jakarta.servlet.FilterChain;
@@ -17,43 +17,43 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
-	
-	
-	private JWTokenService tokenService;
-	private UsuarioRepository usuarioRepository;
 
-	
-	public SecurityFilter(JWTokenService tokenService, UsuarioRepository usuarioRepository) {
-		this.tokenService = tokenService;
-		this.usuarioRepository = usuarioRepository;
-	}
-	
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//System.out.println("FILTRO CHAMADO");
-		var token = recuperarToken(request);
-		if(token!=null) {
-			var login = tokenService.getSubject(token);
-			System.out.println("Login: " + login);
-			var usuario = usuarioRepository.findByUsername(login);
-			var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+    private JWTokenService tokenService;
+    private UserRepository userRepository;
 
-		}
+    public SecurityFilter(JWTokenService tokenService, UserRepository userRepository) {
+        this.tokenService = tokenService;
+        this.userRepository = userRepository;
+    }
 
-		filterChain.doFilter(request, response);
+    @Override
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        var token = recoverToken(request);
 
-	}
-	
-	public String recuperarToken(HttpServletRequest request) {
-        var token = request.getHeader("Authorization");
-        if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
-            return null;
+        if (token != null) {
+            var subject = tokenService.validateToken(token);
+
+            if (subject != null && !subject.isEmpty()) {
+                var user = userRepository.findByUsername(subject);
+
+                if (user != null) {
+                    var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
         }
-        return token.replace("Bearer ", "");
+
+        filterChain.doFilter(request, response);
     }
 
 
+    private String recoverToken(HttpServletRequest request) {
+        var token = request.getHeader("Authorization");
+
+        if (token == null) 
+            return null;
+        
+        return token.replace("Bearer ", "");
+    }
+    
 }
