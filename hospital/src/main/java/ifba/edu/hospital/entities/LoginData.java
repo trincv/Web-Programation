@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import ifba.edu.hospital.enums.Roles;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,10 +23,17 @@ public class LoginData implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String userName;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private boolean active = true;
 
     @Enumerated(EnumType.STRING)
     private Roles role;
@@ -44,7 +52,11 @@ public class LoginData implements UserDetails {
 
     @Override
     public String getUsername() { return userName; }
-    public void setName(String login) { this.userName = login; }
+    public void setUsername(String login) { this.userName = login; }
+
+    @Override
+    public boolean isEnabled() { return this.active; }
+    public void setActive(boolean active) { this.active = active; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

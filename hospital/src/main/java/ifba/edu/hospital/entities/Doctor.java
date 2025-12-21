@@ -3,6 +3,7 @@ package ifba.edu.hospital.entities;
 import ifba.edu.hospital.dtos.doctor.DoctorFormDTO;
 import ifba.edu.hospital.enums.Specialty;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,15 +17,20 @@ import jakarta.persistence.Table;
 public class Doctor {
     
     @Id
+    @Column(nullable = false, unique = true)
     private String crm;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String cellphone;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Specialty specialty;
 
     @OneToOne(cascade = CascadeType.ALL)

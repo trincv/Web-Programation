@@ -6,14 +6,18 @@ import org.springframework.context.support.BeanDefinitionDsl.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ifba.edu.hospital.dtos.doctor.DoctorDTO;
 import ifba.edu.hospital.dtos.doctor.DoctorFormDTO;
+import ifba.edu.hospital.dtos.doctor.DoctorUpdateForm;
 import ifba.edu.hospital.dtos.login.LoginFormDTO;
 import ifba.edu.hospital.entities.Address;
 import ifba.edu.hospital.entities.Doctor;
@@ -42,6 +46,7 @@ public class DoctorService {
         this.authenticationManager = authenticationManager;
     }
 
+    @Transactional
     public DoctorDTO saveDoctor(DoctorFormDTO doctorForm) {
 
         var newDoctor = new Doctor(doctorForm);
@@ -68,49 +73,40 @@ public class DoctorService {
     }
 
     public Page<DoctorDTO> findAllDoctor(Pageable pageable) {
-        return doctorRepository.findAll(pageable).map(DoctorDTO::new);
-    }
-    /* 
-    public List<DoctorDTO> findDoctorByName(String name) {
-
-        List<DoctorDTO> doctorList = doctorRepository.findByName(name).stream().map(DoctorDTO::new).toList();
-
-        if (doctorList.isEmpty()) {
-            return null;
-        }
-
-        return doctorList;
+        return doctorRepository.findAllByLoginActiveTrue(pageable).map(DoctorDTO::new);
     }
 
-    public DoctorDTO updateDoctor(String crm, DoctorFormDTO doctorForm) {
+    @Transactional
+    public DoctorDTO updateDoctor(DoctorUpdateForm doctorUpdateForm) {
 
-        var doctorFound = doctorRepository.findByCrm(crm);
+        var doctorUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (doctorFound == null) 
-            return null;
+        var doctorFound = this.doctorRepository.findByLoginUserName(doctorUsername);
+
+        var newAddress = new Address(doctorUpdateForm.address());
         
-        doctorFound.setName(doctorForm.name());
-        doctorFound.setEmail(doctorForm.email());
-        doctorFound.setCellphone(doctorForm.cellphone());
-        doctorFound.setAddress(doctorForm.address());
-        doctorFound.setSpecialty(doctorForm.specialty());
-        doctorRepository.save(doctorFound);
+        doctorFound.setName(doctorUpdateForm.name());
+        doctorFound.setCellphone(doctorUpdateForm.cellphone());
+        doctorFound.setAddress(newAddress);
+
+        doctorFound = this.doctorRepository.save(doctorFound);
 
         return new DoctorDTO(doctorFound);
     }
 
-    public DoctorDTO deleteDoctor(String crm) {
+   
+    @Transactional
+    public DoctorDTO deleteDoctor() {
         
-        var deletedDoctor = doctorRepository.findByCrm(crm);
+        var doctorUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (deletedDoctor == null) {
-            return null;
-        }
+        var doctorFound = this.doctorRepository.findByLoginUserName(doctorUsername);
 
-        DoctorDTO deletedDoctorDTO = new DoctorDTO(deletedDoctor);
-        doctorRepository.deleteById(crm);
+        doctorFound.getLogin().setActive(false);
 
-        return deletedDoctorDTO;
+        doctorFound = this.doctorRepository.save(doctorFound);
+
+        return new DoctorDTO(doctorFound);
     }
-        */
+
 }

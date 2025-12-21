@@ -6,7 +6,7 @@ public enum Specialty {
     ORTOPEDY("Ortopedia"),
     CARDIOLOGY("Cardiologia"),
     GINECOLOGY("Ginecologia"),
-    DEMARTOLOGY("Demartologia");
+    DERMATOLOGY("Dermatologia");
 
     private final String displayName;
 
