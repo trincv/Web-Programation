@@ -1,16 +1,11 @@
 package ifba.edu.hospital.service;
 
-import java.util.List;
-
-import org.springframework.context.support.BeanDefinitionDsl.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,13 +45,13 @@ public class DoctorService {
     public DoctorDTO saveDoctor(DoctorFormDTO doctorForm) {
 
         var newDoctor = new Doctor(doctorForm);
-        var address = new Address(doctorForm.address());
+        var doctorAddress = new Address(doctorForm.address());
         var doctorLogin = new LoginData(doctorForm.userName(), passwordEncoder.encode(doctorForm.password()), Roles.DOCTOR);
 
-        newDoctor.setAddress(address);
+        newDoctor.setAddress(doctorAddress);
         newDoctor.setLogin(doctorLogin);
 
-        var savedDoctor = doctorRepository.save(newDoctor);
+        var savedDoctor = this.doctorRepository.save(newDoctor);
 
         return new DoctorDTO(savedDoctor);
     }
@@ -65,7 +60,7 @@ public class DoctorService {
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginForm.userName(), loginForm.password());
 
-        var auth = authenticationManager.authenticate(usernamePassword);
+        var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var login = (UserDetails) auth.getPrincipal();
 
@@ -73,7 +68,7 @@ public class DoctorService {
     }
 
     public Page<DoctorDTO> findAllDoctor(Pageable pageable) {
-        return doctorRepository.findAllByLoginActiveTrue(pageable).map(DoctorDTO::new);
+        return this.doctorRepository.findAllByLoginActiveTrue(pageable).map(DoctorDTO::new);
     }
 
     @Transactional
@@ -94,7 +89,6 @@ public class DoctorService {
         return new DoctorDTO(doctorFound);
     }
 
-   
     @Transactional
     public DoctorDTO deleteDoctor() {
         

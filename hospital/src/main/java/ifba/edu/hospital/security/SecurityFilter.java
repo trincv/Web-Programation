@@ -41,7 +41,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 
                 if (loginData != null) {
                     
-                    if (!loginData.isEnabled()) {
+                    if (!loginData.isEnabled()) {                             // Account's validation 
                         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");

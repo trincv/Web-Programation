@@ -52,8 +52,7 @@ public class DoctorController {
         @PageableDefault(size = 10, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) 
     {
-
-        Page<DoctorDTO> doctorPage = doctorService.findAllDoctor(pageable);
+        var doctorPage = doctorService.findAllDoctor(pageable);
 
         if (doctorPage.isEmpty())
             return ResponseEntity.noContent().build();

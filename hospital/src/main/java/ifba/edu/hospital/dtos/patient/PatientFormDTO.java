@@ -1,11 +1,10 @@
-package ifba.edu.hospital.dtos.doctor;
+package ifba.edu.hospital.dtos.patient;
 
 import ifba.edu.hospital.dtos.address.AddressFormDTO;
-import ifba.edu.hospital.enums.Specialty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record DoctorFormDTO (
+public record PatientFormDTO (
 
     @NotBlank(message = "Login is required")
     String userName,
@@ -13,8 +12,8 @@ public record DoctorFormDTO (
     @NotBlank(message = "Password is required")
     String password,
     
-    @NotBlank(message = "The crm cannot be blank")
-    String crm,
+    @NotBlank(message = "The cpf cannot be blank")
+    String cpf,
 
     @NotBlank(message = "The name cannot be blank")
     String name,
@@ -24,10 +23,7 @@ public record DoctorFormDTO (
 
     @NotBlank(message = "The cellphone cannot be blank")
     String cellphone,
-
-    @NotNull(message = "The adress cannot be null")
-    Specialty specialty,
     
     @NotNull(message = "The adress cannot be null")
-    AddressFormDTO address )
-{}
+    AddressFormDTO address 
+) {}
