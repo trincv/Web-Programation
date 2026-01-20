@@ -38,17 +38,17 @@ public class DoctorController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<DoctorDTO> registerDoctor(@RequestBody @Valid DoctorFormDTO doctorForm) {
+    public ResponseEntity<DoctorDTO> register(@RequestBody @Valid DoctorFormDTO doctorForm) {
         return ResponseEntity.ok(doctorService.saveDoctor(doctorForm));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginDoctor(@RequestBody @Valid LoginFormDTO loginForm) {
+    public ResponseEntity<String> login(@RequestBody @Valid LoginFormDTO loginForm) {
         return ResponseEntity.ok(doctorService.loginDoctor(loginForm));
     }
 
     @GetMapping("/searchAll")
-    public ResponseEntity<Page<DoctorDTO>> getAllDoctor(
+    public ResponseEntity<Page<DoctorDTO>> getAll(
         @PageableDefault(size = 10, sort = {"name"}, direction = Sort.Direction.ASC)
         Pageable pageable) 
     {
@@ -60,8 +60,8 @@ public class DoctorController {
         return ResponseEntity.ok(doctorPage);
     }
 
-    @PutMapping("/updateDoctor")
-    public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody DoctorUpdateForm doctorUpdateForm) {
+    @PutMapping("/update")
+    public ResponseEntity<DoctorDTO> update(@RequestBody DoctorUpdateForm doctorUpdateForm) {
         
         var updatedDoctor = doctorService.updateDoctor(doctorUpdateForm);
 
@@ -71,8 +71,8 @@ public class DoctorController {
         return ResponseEntity.ok(updatedDoctor);
     }
 
-    @DeleteMapping("/deleteDoctor")
-    public ResponseEntity<DoctorDTO> deleteDoctor() {
+    @DeleteMapping("/delete")
+    public ResponseEntity<DoctorDTO> delete() {
 
         var deletedDoctor = doctorService.deleteDoctor();
 

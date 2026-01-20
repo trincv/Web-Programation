@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import ifba.edu.hospital.dtos.login.LoginFormDTO;
 import ifba.edu.hospital.dtos.patient.PatientDTO;
 import ifba.edu.hospital.dtos.patient.PatientFormDTO;
+import ifba.edu.hospital.dtos.patient.PatientUpdateForm;
 import ifba.edu.hospital.entities.Address;
 import ifba.edu.hospital.entities.LoginData;
 import ifba.edu.hospital.entities.Patient;
@@ -68,5 +70,35 @@ public class PatientService {
 
     public Page<PatientDTO> findAllPatient(Pageable pageable) {
         return this.patientRepository.findAllByLoginActiveTrue(pageable).map(PatientDTO::new);
+    }
+
+    @Transactional
+    public PatientDTO updatePatient(PatientUpdateForm patientUpdateForm) {
+
+        var patientUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        var patient = this.patientRepository.findByLoginUserName(patientUsername);
+
+        if (patient == null) return null;
+
+        patient.setName(patientUpdateForm.name());
+        patient.setCellphone(patientUpdateForm.cellphone());
+        patient.setAddress(new Address(patientUpdateForm.address()));
+
+        return new PatientDTO(this.patientRepository.save(patient));
+    }
+
+    @Transactional
+    public PatientDTO deletePatient() {
+
+        var patientUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        var patient = this.patientRepository.findByLoginUserName(patientUsername);
+
+        if(patient == null) return null;
+
+        patient.getLogin().setActive(false);
+
+        return new PatientDTO(this.patientRepository.save(patient));
     }
 }

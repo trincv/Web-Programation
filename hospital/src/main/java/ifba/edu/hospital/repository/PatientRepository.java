@@ -9,4 +9,5 @@ import ifba.edu.hospital.entities.Patient;
 public interface PatientRepository extends JpaRepository<Patient, String> {
     
     public Page<Patient> findAllByLoginActiveTrue(Pageable pagination);
+    public Patient findByLoginUserName(String UserName);
 }
